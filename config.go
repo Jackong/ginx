@@ -3,7 +3,6 @@ package ginx
 import (
 	"encoding/json"
 
-	j "github.com/bitly/go-simplejson"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,22 +12,15 @@ func GetString(c *gin.Context, key string) (value string) {
 	if !ok {
 		return
 	}
-	data, ok := v.(map[string]string)
+	value, ok = v.(string)
 	if !ok {
 		return
 	}
-	value = data[key]
-	return
-}
-
-//GetJSON by key
-func GetJSON(c *gin.Context, key string) (*j.Json, error) {
-	value := GetString(c, key)
-	return j.NewJson([]byte(value))
+	return value
 }
 
 //GetObject by key
 func GetObject(c *gin.Context, key string, obj interface{}) error {
-  value := GetString(c, key)
+	value := GetString(c, key)
 	return json.Unmarshal([]byte(value), obj)
 }
